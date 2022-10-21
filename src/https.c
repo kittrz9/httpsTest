@@ -22,8 +22,16 @@ char* httpsRequest(SSL* ssl, connection c, char* method, char* path, char* heade
 	sprintf(request, "%s %s HTTP/1.1\r\nHost: %s\r\n%s\r\n", method, path, c.addr->ai_canonname, headers);
 	printf("\n- REQUEST - \n%s\n\n", request);
 
-	SSL_write(ssl, request, strlen(request));
+	if(SSL_write(ssl, request, strlen(request)) < 1) {
+		ERR_print_errors_fp(stderr);
+		return NULL;
+	}
+
 	int responseLength = SSL_read(ssl, response, sizeof(char) * MAX_RESPONSE_LEN);
+	if(responseLength < 1) {
+		ERR_print_errors_fp(stderr);
+		return NULL;
+	}
 	response[responseLength] = '\0';
 
 	return response;
