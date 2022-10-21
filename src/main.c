@@ -26,6 +26,8 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	showCerts(ssl);
+
 	char* response = httpsRequest(ssl, c, "GET", "/", "Content-Type: text/plaintext\r\n");
 	if(response == NULL) { return 1; }
 	printf("%s\n", response);
