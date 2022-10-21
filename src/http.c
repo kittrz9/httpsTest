@@ -12,19 +12,17 @@
 #define MAX_RESPONSE_LEN 4096
 char* httpRequest(connection c, char* method, char* path, char* headers) {
 	char* response = malloc(sizeof(char) * MAX_RESPONSE_LEN);
-	if(strcmp(method, "GET") == 0) {
-		char request[MAX_REQUEST_LEN];
-		sprintf(request, "GET %s HTTP/1.1\r\nHost: %s\r\n%s\r\n", path, c.addr->ai_canonname, headers);
-		printf("\nrequest: %s\n\n", request);
-		if(send(c.socket, request, strlen(request), 0) < 0) {
-			fprintf(stderr, "could not send request\n");
-			return NULL;
-		}
+	char request[MAX_REQUEST_LEN];
+	sprintf(request, "%s %s HTTP/1.1\r\nHost: %s\r\n%s\r\n", method, path, c.addr->ai_canonname, headers);
+	printf("\nrequest: %s\n\n", request);
+	if(send(c.socket, request, strlen(request), 0) < 0) {
+		fprintf(stderr, "could not send request\n");
+		return NULL;
+	}
 
-		if(recv(c.socket, response, MAX_REQUEST_LEN, 0) < 0) {
-			fprintf(stderr, "failed to recieve response\n");
-			return NULL;
-		}
+	if(recv(c.socket, response, MAX_REQUEST_LEN, 0) < 0) {
+		fprintf(stderr, "failed to recieve response\n");
+		return NULL;
 	}
 
 	return response;

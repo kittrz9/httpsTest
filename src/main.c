@@ -32,6 +32,8 @@ int main(int argc, char** argv) {
 	if(response == NULL) { return 1; }
 	printf("%s\n", response);
 
+	free(response);
+
 	disconnect(c);
 
 	return 0;
