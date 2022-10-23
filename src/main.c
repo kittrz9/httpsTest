@@ -28,13 +28,15 @@ int main(int argc, char** argv) {
 
 	showCerts(ssl);
 
-	char* response = httpsRequest(ssl, c, "GET", "/", "Content-Type: text/plaintext\r\n");
+	char* response = httpsRequest(ssl, c, "GET", "/", "\r\n");
 	if(response == NULL) { return 1; }
 	printf("%s\n", response);
 
 	free(response);
 
 	disconnect(c);
+
+	SSL_shutdown(ssl);
 
 	return 0;
 }

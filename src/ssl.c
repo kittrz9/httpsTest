@@ -27,7 +27,7 @@ void showCerts(SSL* ssl) {
 
 	cert = SSL_get_peer_certificate(ssl);
 	if(cert != NULL) {
-		printf("server certificates:\n");
+		printf("\nserver certificates:\n");
 		line = X509_NAME_oneline(X509_get_subject_name(cert), 0, 0);
 		printf("subject: %s\n", line);
 		free(line);
@@ -38,4 +38,5 @@ void showCerts(SSL* ssl) {
 	} else {
 		printf("no client certificates configured\n");
 	}
+	printf("\n");
 }
